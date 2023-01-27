@@ -1,5 +1,12 @@
+@props([
+    'slideId' => null
+])
+
 <div {{ $attributes }}>
-    <div class="carousel__slidesHolder">
+    <div 
+        id="{{ $slideId }}"
+        class="carousel__slidesHolder"
+    >
         {!! $slot !!}
     </div>
 </div>
