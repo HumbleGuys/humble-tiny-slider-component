@@ -1,4 +1,4 @@
-import { tns } from 'tiny-slider';
+import { tns } from "tiny-slider";
 
 export default ({ slideCount, settings }) => ({
     slideCount: slideCount,
@@ -19,17 +19,24 @@ export default ({ slideCount, settings }) => ({
 
     activeDot: 1,
 
-    init () {
+    initialized: false,
+
+    init() {
         this.carousel = tns({
-            container: this.$el.querySelector('.carousel__slidesHolder'),
+            container: this.$el.querySelector(".carousel__slidesHolder"),
             mouseDrag: true,
             controls: false,
             nav: false,
             autoplayButtonOutput: false,
-            ...this.settings
+            onInit: () => {
+                this.$nextTick(() => {
+                    this.initialized = true;
+                });
+            },
+            ...this.settings,
         });
 
-        this.carousel.events.on('indexChanged', info => {
+        this.carousel.events.on("indexChanged", (info) => {
             if (this.currentSlide !== info.displayIndex) {
                 this.switchingSlide = true;
 
@@ -43,13 +50,13 @@ export default ({ slideCount, settings }) => ({
             this.activeDot = Math.ceil(info.displayIndex / info.slideBy);
         });
 
-        this.carousel.events.on('transitionEnd', info => {
+        this.carousel.events.on("transitionEnd", (info) => {
             if (this.isPaused) {
                 this.pause();
             }
         });
 
-        this.carousel.events.on('newBreakpointEnd', info => {
+        this.carousel.events.on("newBreakpointEnd", (info) => {
             this.setDotsCount(info);
 
             this.activeDot = Math.ceil(info.displayIndex / info.slideBy);
@@ -64,28 +71,32 @@ export default ({ slideCount, settings }) => ({
         this.dotsCount = Math.ceil(slideInfo.slideCount / slideInfo.slideBy);
     },
 
-    prev () {
-        this.goTo('prev');
+    prev() {
+        this.goTo("prev");
     },
 
-    next () {
-        this.goTo('next');
+    next() {
+        this.goTo("next");
     },
 
-    goTo (index) {
+    goTo(index) {
         if (!this.isPaused) {
             this.carousel.pause();
             this.carousel.play();
         }
 
-        if (index !== 'next' && index !== 'prev' && (this.settings?.slideBy === 'page')) {
+        if (
+            index !== "next" &&
+            index !== "prev" &&
+            this.settings?.slideBy === "page"
+        ) {
             index = index * this.carousel.getInfo().slideBy;
         }
 
         this.carousel.goTo(index);
     },
 
-    toggleAutoplay () {
+    toggleAutoplay() {
         if (this.isPaused) {
             this.play();
         } else {
@@ -93,17 +104,17 @@ export default ({ slideCount, settings }) => ({
         }
     },
 
-    pause () {
+    pause() {
         this.isPaused = true;
         this.carousel.pause();
     },
 
-    play () {
+    play() {
         this.isPaused = false;
         this.carousel.play();
     },
 
-    forceTwoDigits (number) {
+    forceTwoDigits(number) {
         return number > 9 ? number : `0${number}`;
-    }
+    },
 });

@@ -15,7 +15,7 @@
 
 @once
     @push('head')
-        <link rel="stylesheet" href="{{ asset('../vendor/humble-guys/humble-tiny-slider-component/public/resources/dist/style.css?v=0.0.2') }}">
-        <script module defer src="{{ asset('../vendor/humble-guys/humble-tiny-slider-component/public/resources/dist/humble-tiny-slider-component.umd.js?v=0.0.2') }}"></script>
+        <link rel="stylesheet" href="{{ asset('../vendor/humble-guys/humble-tiny-slider-component/public/resources/dist/style.css?v=0.0.4') }}">
+        <script module defer src="{{ asset('../vendor/humble-guys/humble-tiny-slider-component/public/resources/dist/humble-tiny-slider-component.umd.js?v=0.0.4') }}"></script>
     @endpush   
 @endonce 
